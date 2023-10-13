@@ -110,6 +110,25 @@ app.post('/documents/reset', (req: express.Request, res: express.Response) => {
     documentHolder.reset();
     res.status(200).send('reset');
 });
+// 在这里先验证用户名是不是typo，是不是要create一个新的document
+
+// first, check if username exists, if not, ask user if they want to create a new document, if yes, select existing document, if there is no existing document, ask usesr if they want to create a new document, if yes, create a new document, if no, return to the main page
+
+app.get('/documents/:name', (req: express.Request, res: express.Response) => {
+    const name = req.params.name;
+    // get the userName from the body
+    const userName = req.body.userName;
+    // is this name valid?
+    const documentNames = documentHolder.getDocumentNames();
+    if (documentNames.indexOf(name) === -1) {
+        res.status(404).send(`Document ${name} not found`);
+        return;
+    }
+    // get the document
+    const document = documentHolder.getDocumentJSON(name, userName);
+
+    res.status(200).send(document);
+});
 
 app.post('/documents/create/:name', (req: express.Request, res: express.Response) => {
     const name = req.params.name;
