@@ -39,8 +39,9 @@ export class SpreadSheetController {
   private _currentWorkingColumn = 0;
 
   /** the users who are editing this sheet */
-
+  // user_name -> ContributingUser instance
   private _contributingUsers: Map<string, ContributingUser> = new Map<string, ContributingUser>();
+  // cell_label -> user_name
   private _cellsBeingEdited: Map<string, string> = new Map<string, string>();
 
 
@@ -334,6 +335,10 @@ export class SpreadSheetController {
     container.formula = this.getFormulaStringForUser(user);
     container.result = this.getResultStringForUser(user);
     container.isEditing = userData.isEditing;
+    container.contributingUsers = [];
+    this._contributingUsers.forEach(value, key) => {
+      // TODO: XXX
+    }
     return container;
   }
 

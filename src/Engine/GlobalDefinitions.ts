@@ -24,6 +24,12 @@ export interface CellTransport {
   formula: string[];
   value: number;
   error: string;
+  editing: boolean;
+}
+
+export interface userEditing {
+  user: string;
+  cell: string;
 }
 
 export interface CellTransportMap {
@@ -37,5 +43,6 @@ export interface DocumentTransport {
   result: string;
   currentCell: string;
   isEditing: boolean;
+  contributingUsers: userEditing[];
 }
 

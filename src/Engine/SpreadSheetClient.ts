@@ -391,10 +391,21 @@ class SpreadSheetClient {
                 formula: cellTransport.formula,
                 value: cellTransport.value,
                 error: cellTransport.error,
+                editing: this._getEditorString(cellName) === this._userName,
             };
             this._document!.cells.set(cellName, cell);
         }
 
+    }
+
+    private _getEditorString(cellName: string): string {
+        const contributingUsers = this._document!.contributingUsers;
+        for (let i = 0; i < contributingUsers.length; i++) {
+            if (contributingUsers[i].cell === cellName) {
+                return contributingUsers[i].user;
+            }
+        }
+        return '';
     }
 
     /**

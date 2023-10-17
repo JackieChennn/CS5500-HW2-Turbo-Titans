@@ -67,6 +67,7 @@ function SheetComponent({ cellsValues, onClick, currentCell, currentlyEditing }:
                   cell-label={Cell.columnRowToCell(colIndex, rowIndex)}
                   data-testid={Cell.columnRowToCell(colIndex, rowIndex)}
                   className={(getCellClass(Cell.columnRowToCell(colIndex, rowIndex)))}
+                  // TODO: XXX
                 >
                   {cell}
                 </button>
