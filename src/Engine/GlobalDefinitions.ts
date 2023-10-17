@@ -24,12 +24,12 @@ export interface CellTransport {
   formula: string[];
   value: number;
   error: string;
-  editing: boolean;
+  editing: string;
 }
 
 export interface userEditing {
-  user: string;
-  cell: string;
+  userName: string;
+  cellLabel: string;
 }
 
 export interface CellTransportMap {
