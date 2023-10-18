@@ -127,23 +127,81 @@ export class FormulaEvaluator {
    *  
    */
   private term(): number {
-    let result = this.factor();
+    let result = this.scientific();
     while (this._currentFormula.length > 0 && (this._currentFormula[0] === "*" || this._currentFormula[0] === "/")) {
       let operator = this._currentFormula.shift();
-      let factor = this.factor();
+      let power = this.scientific();
       if (operator === "*") {
-        result *= factor;
+        result *= power;
       } else {
         // check for divide by zero
-        if (factor === 0) {
+        if (power === 0) {
           this._errorOccured = true;
           this._errorMessage = ErrorMessages.divideByZero;
           this._lastResult = Infinity;
           return Infinity;
         }
         // we are ok, lets divide
-        result /= factor;
+        result /= power;
       }
+    }
+    // set the lastResult to the result
+    this._lastResult = result;
+    return result;
+  }
+
+  /**
+   * Evaluates trigonometric and other mathematical functions in the formula.
+   * @returns The result of the evaluated formula.
+   */
+  private scientific(): number {
+    let result = this.factor();
+    while (this._currentFormula.length > 0 && (this._currentFormula[0] === "^2" || this._currentFormula[0] === "^3" || this._currentFormula[0] === "sin" || this._currentFormula[0] === "cos" || this._currentFormula[0] === "tan" || this._currentFormula[0] === "²√" || this._currentFormula[0] === "³√" || this._currentFormula[0] === "1/x" || this._currentFormula[0] === "+/-" || this._currentFormula[0] === "asin" || this._currentFormula[0] === "acos" || this._currentFormula[0] === "atan")) {
+      let operator = this._currentFormula.shift();
+      //let factor = this.factor();
+      if (operator === "^2") {
+        // check for negative number
+        if (result < 0) {
+          this._errorOccured = true;
+          this._errorMessage = ErrorMessages.invalidFormula;
+          result = NaN;
+        }
+        // we are ok, lets compute the square
+        result = Math.pow(result, 2);
+      } else if (operator === "^3") {
+        // check for negative number
+        if (result < 0) {
+          this._errorOccured = true;
+          this._errorMessage = ErrorMessages.invalidFormula;
+          result = NaN;
+        }
+        // we are ok, lets compute the square
+        result = Math.pow(result, 3);
+      } else if (operator === "sin") {
+        result = Math.sin(result);
+      } else if (operator === "cos") {
+        result = Math.cos(result);
+      } else if (operator === "tan") {
+        result = Math.tan(result);
+      } else if (operator === "²√") {
+        result = Math.sqrt(result);
+      } else if (operator === "³√") {
+        result = Math.cbrt(result);
+      } else if (operator === "1/x") {
+        result = 1 / result;
+      } else if (operator === "+/-") {
+        result = -1 * result;
+      } else if (operator === "asin") {
+        // calculate the arcsine
+        result = Math.asin(result);
+      } else if (operator === "acos") {
+        // calculate the arccosine
+        result = Math.acos(result);
+      } else if (operator === "atan") {
+        // calculate the arctangent
+        result = Math.atan(result);
+      }
+      
     }
     // set the lastResult to the result
     this._lastResult = result;

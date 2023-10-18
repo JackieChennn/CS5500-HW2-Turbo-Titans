@@ -134,8 +134,16 @@ function SpreadSheet({ documentName }: SpreadSheetProps) {
     if (!checkUserName()) {
       return;
     }
-    const text = event.currentTarget.textContent;
-    let trueText = text ? text : "";
+    let trueText;
+    let text = event.currentTarget.textContent;
+    if (text === "Rand") {
+      // calculate a random number between 0 and 1
+      const randomNumber = Math.random();
+      // update the cell value with the random number
+      trueText = randomNumber.toString();
+    } else {
+      trueText = text ? text : "";
+    }
     spreadSheetClient.setEditStatus(true);
     spreadSheetClient.addToken(trueText);
 
