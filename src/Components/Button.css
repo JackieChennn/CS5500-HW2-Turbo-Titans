@@ -24,6 +24,19 @@
   height: 60px;
 }
 
+.button-scientific {
+  background-color: #196429;
+  border: 5px solid #000000;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: large;
+  width: 80px;
+  height: 60px;
+}
+
 .button-edit-end {
   background-color: #707070;
   border: 5px solid #000000;

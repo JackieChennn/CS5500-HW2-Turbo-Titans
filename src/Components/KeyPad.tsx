@@ -187,6 +187,103 @@ function KeyPad({ onButtonClick, onCommandButtonClick, currentlyEditing }: KeyPa
         />
       </div>
 
+        <div className="buttons-row">
+          <Button
+            text="sin"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="sin-button"
+          />
+          <Button
+            text="cos"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="cos-button"
+          />
+          <Button
+            text="tan"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="tan-button"
+          />
+          <Button
+            text="asin"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="cosecant-button"
+          />
+          <Button
+            text="acos"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="secant-button"
+          />
+          <Button
+            text="atan"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="cotangent-button"
+          />
+        </div>
+
+        <div className="buttons-row">
+          <Button
+            text="Rand"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="rand-button"
+          />
+          <Button
+            text="^2"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="x-squared-button"
+          />
+          <Button
+            text="^3"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="x-cubed-button"
+          />
+          <Button
+            text="²√"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="square-root-button"
+          />
+          <Button
+            text="³√"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="cube-root-button"
+          />
+          <Button
+            text="+/-"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="sign-button"
+          />
+          <Button
+            text="1/x"
+            isDigit={false}
+            onClick={onButtonClick}
+            className="button-scientific"
+            dataTestId="multiplicative-inverse-button"
+          />
+        </div>
+
     </div>
   );
 } // KeyPad
