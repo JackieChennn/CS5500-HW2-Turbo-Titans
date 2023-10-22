@@ -311,7 +311,7 @@ describe("FormulaEvaluator", () => {
     });
 
     describe("when the formula is 1 * ) ", () => {
-      it("returns the number", () => {
+      it("returns the number 1", () => {
         const formula = ["1", "+", "+"];
 
         recalc.evaluate(formula);
@@ -422,6 +422,48 @@ describe("FormulaEvaluator", () => {
       });
     });
 
+    describe("when the formula is 90 sin asin' ", () => {
+      it("returns the number 1.106186954104004", () => {
+        const formula = ["90", "sin", "asin"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(1.106186954104004);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is 90 cos acos' ", () => {
+      it("returns the number 2.035405699485789", () => {
+        const formula = ["90", "cos", "acos"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(2.035405699485789);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is 90 tan atan' ", () => {
+      it("returns the number PI/4", () => {
+        const formula = ["90", "tan", "atan"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(-1.106186954104004);
+        expect(error).toEqual("");
+      });
+    });
+
     describe("when the formula is 4 sqrt' ", () => {
       it("returns the number 2", () => {
         const formula = ["4", "²√"];
@@ -436,6 +478,34 @@ describe("FormulaEvaluator", () => {
       });
     });
 
+    describe("when the formula is 1/4 sqrt' ", () => {
+      it("returns the number 0.5", () => {
+        const formula = ["1", "/", "4", "²√"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(0.5);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is -4 sqrt' ", () => {
+      it("returns invalid formula", () => {
+        const formula = ["4", "+/-", "²√"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(NaN);
+        expect(error).toEqual(ErrorMessages.invalidFormula);
+      });
+    });
+
     describe("when the formula is 8 cuberoot' ", () => {
       it("returns the number 2", () => {
         const formula = ["8", "³√"];
@@ -447,6 +517,34 @@ describe("FormulaEvaluator", () => {
 
         expect(result).toEqual(2);
         expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is 1/8 cuberoot' ", () => {
+      it("returns the number 0.5", () => {
+        const formula = ["1", "/", "8", "³√"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(0.5);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is -8 cuberoot' ", () => {
+      it("returns the number 2", () => {
+        const formula = ["8", "+/-", "³√"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(NaN);
+        expect(error).toEqual(ErrorMessages.invalidFormula);
       });
     });
 
@@ -492,6 +590,20 @@ describe("FormulaEvaluator", () => {
       });
     });
 
+    describe("when the formula is -4 1/x' ", () => {
+      it("returns the number 0.25", () => {
+        const formula = ["4", "+/-", "1/x"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(-0.25);
+        expect(error).toEqual("");
+      });
+    });
+
     describe("when the formula is 2 1/x ^2 1/x' ", () => {
       it("returns the number 4", () => {
         const formula = ["2", "1/x", "^2", "1/x"];
@@ -516,6 +628,48 @@ describe("FormulaEvaluator", () => {
         let error = recalc.error;
 
         expect(result).toEqual(256);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is 2 ^2 + 30 1/x", () => {
+      it("returns the number 4.033333333333333", () => {
+        const formula = ["2", "^2", "+", "30", "1/x"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(4.033333333333333);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is 2 ^2 + 30 1/x +/-", () => {
+      it("returns the number 3.966666666666667", () => {
+        const formula = ["2", "^2", "+", "30", "1/x", "+/-"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(3.966666666666667);
+        expect(error).toEqual("");
+      });
+    });
+
+    describe("when the formula is ( 60 + 30 ) sin ^2 ^2 ^2' ", () => {
+      it("returns the number 256", () => {
+        const formula = ["(", "60", "+", "30", ")", "sin", "^2", "1/x"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(1.2512042300680128);
         expect(error).toEqual("");
       });
     });
