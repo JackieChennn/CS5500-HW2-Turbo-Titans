@@ -175,7 +175,7 @@ export class FormulaEvaluator {
           this._errorMessage = ErrorMessages.invalidFormula;
           result = NaN;
         }
-        // we are ok, lets compute the square
+        // we are ok, lets compute the cube
         result = Math.pow(result, 3);
       } else if (operator === "sin") {
         result = Math.sin(result);
@@ -184,8 +184,22 @@ export class FormulaEvaluator {
       } else if (operator === "tan") {
         result = Math.tan(result);
       } else if (operator === "²√") {
+        // check for negative number
+        if (result < 0) {
+          this._errorOccured = true;
+          this._errorMessage = ErrorMessages.invalidFormula;
+          result = NaN;
+        }
+        // we are ok, lets compute square root
         result = Math.sqrt(result);
       } else if (operator === "³√") {
+        // check for negative number
+        if (result < 0) {
+          this._errorOccured = true;
+          this._errorMessage = ErrorMessages.invalidFormula;
+          result = NaN;
+        }
+        // we are ok, lets compute cube root
         result = Math.cbrt(result);
       } else if (operator === "1/x") {
         result = 1 / result;
