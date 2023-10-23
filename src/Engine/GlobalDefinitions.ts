@@ -24,18 +24,28 @@ export interface CellTransport {
   formula: string[];
   value: number;
   error: string;
+  // who is edition
+  editing: string;
+}
+
+export interface userEditing {
+  user: string;
+  cell: string;
 }
 
 export interface CellTransportMap {
+  // cellName -> CellTransport
   [key: string]: CellTransport;
 }
 export interface DocumentTransport {
   columns: number;
   rows: number;
+  // cell_label -> CellTransport
   cells: Map<string, CellTransport>;
   formula: string;
   result: string;
   currentCell: string;
   isEditing: boolean;
+  contributingUsers: userEditing[];
 }
 

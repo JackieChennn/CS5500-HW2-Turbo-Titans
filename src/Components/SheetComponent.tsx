@@ -68,7 +68,8 @@ function SheetComponent({ cellsValues, onClick, currentCell, currentlyEditing }:
                   data-testid={Cell.columnRowToCell(colIndex, rowIndex)}
                   className={(getCellClass(Cell.columnRowToCell(colIndex, rowIndex)))}
                 >
-                  {cell}
+                  {getCellValue(cell)}
+                  <label className="cell-label">{ getCellEditor(cell)}</label>
                 </button>
 
               </td>
@@ -80,7 +81,12 @@ function SheetComponent({ cellsValues, onClick, currentCell, currentlyEditing }:
   );
 } // SheetComponent
 
+function getCellValue(cell: string) {
+  return cell.split("|")[0]
+}
 
-
+function getCellEditor(cell: string) {
+  return cell.split("|")[1]
+}
 
 export default SheetComponent;
