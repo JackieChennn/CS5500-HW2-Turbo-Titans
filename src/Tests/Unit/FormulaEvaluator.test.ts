@@ -674,5 +674,19 @@ describe("FormulaEvaluator", () => {
       });
     });
 
+    describe("when the formula is 0 1/x", () => {
+      it("returns error", () => {
+        const formula = ["0", "1/x"];
+
+        recalc.evaluate(formula);
+
+        let result = recalc.result;
+        let error = recalc.error;
+
+        expect(result).toEqual(NaN);
+        expect(error).toEqual(ErrorMessages.invalidFormula);
+      });
+    });
+
   });
 });
