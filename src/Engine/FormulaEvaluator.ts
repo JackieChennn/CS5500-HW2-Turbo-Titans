@@ -165,18 +165,18 @@ export class FormulaEvaluator {
           this._errorOccured = true;
           this._errorMessage = ErrorMessages.invalidFormula;
           result = NaN;
+        } else {
+          result = Math.pow(result, 2);
         }
-        // we are ok, lets compute the square
-        result = Math.pow(result, 2);
       } else if (operator === "^3") {
         // check for negative number
         if (result < 0) {
           this._errorOccured = true;
           this._errorMessage = ErrorMessages.invalidFormula;
           result = NaN;
+        } else {
+          result = Math.pow(result, 3);
         }
-        // we are ok, lets compute the cube
-        result = Math.pow(result, 3);
       } else if (operator === "sin") {
         result = Math.sin(result);
       } else if (operator === "cos") {
@@ -189,20 +189,27 @@ export class FormulaEvaluator {
           this._errorOccured = true;
           this._errorMessage = ErrorMessages.invalidFormula;
           result = NaN;
+        } else {
+          result = Math.sqrt(result);
         }
-        // we are ok, lets compute square root
-        result = Math.sqrt(result);
       } else if (operator === "³√") {
         // check for negative number
         if (result < 0) {
           this._errorOccured = true;
           this._errorMessage = ErrorMessages.invalidFormula;
           result = NaN;
+        } else {
+          result = Math.cbrt(result);
         }
-        // we are ok, lets compute cube root
-        result = Math.cbrt(result);
       } else if (operator === "1/x") {
-        result = 1 / result;
+        // check for divide by zero
+        if (result === 0) {
+          this._errorOccured = true;
+          this._errorMessage = ErrorMessages.invalidFormula;
+          result = NaN;
+        } else {
+          result = 1 / result;
+        }
       } else if (operator === "+/-") {
         result = -1 * result;
       } else if (operator === "asin") {
