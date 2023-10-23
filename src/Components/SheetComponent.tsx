@@ -81,6 +81,7 @@ function SheetComponent({ cellsValues, onClick, currentCell, currentlyEditing }:
   );
 } // SheetComponent
 
+// Add two utility functions to get the cell value and the cell editor
 function getCellValue(cell: string) {
   return cell.split("|")[0]
 }

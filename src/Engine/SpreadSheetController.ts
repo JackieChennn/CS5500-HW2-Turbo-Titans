@@ -335,6 +335,7 @@ export class SpreadSheetController {
     container.formula = this.getFormulaStringForUser(user);
     container.result = this.getResultStringForUser(user);
     container.isEditing = userData.isEditing;
+    // add an array to the container tha is being built
     container.contributingUsers = [];
     this._contributingUsers.forEach((value: ContributingUser, key: string) => {
       let user = {

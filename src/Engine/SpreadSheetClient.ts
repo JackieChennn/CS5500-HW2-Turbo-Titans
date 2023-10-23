@@ -403,6 +403,7 @@ class SpreadSheetClient {
 
     }
 
+    // Add a function to get the editor string
     private _getEditorString(contributingUsers: userEditing[], cellLabel: string): string {
         for (let user of contributingUsers) {
             if (user.cell === cellLabel) {

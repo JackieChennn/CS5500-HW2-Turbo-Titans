@@ -28,6 +28,7 @@ export interface CellTransport {
   editing: string;
 }
 
+// extend the interface
 export interface userEditing {
   user: string;
   cell: string;
