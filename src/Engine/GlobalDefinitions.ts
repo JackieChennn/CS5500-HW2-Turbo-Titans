@@ -24,20 +24,23 @@ export interface CellTransport {
   formula: string[];
   value: number;
   error: string;
+  // who is edition
   editing: string;
 }
 
 export interface userEditing {
-  userName: string;
-  cellLabel: string;
+  user: string;
+  cell: string;
 }
 
 export interface CellTransportMap {
+  // cellName -> CellTransport
   [key: string]: CellTransport;
 }
 export interface DocumentTransport {
   columns: number;
   rows: number;
+  // cell_label -> CellTransport
   cells: Map<string, CellTransport>;
   formula: string;
   result: string;

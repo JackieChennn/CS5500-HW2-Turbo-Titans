@@ -165,7 +165,8 @@ class SpreadSheetClient {
                 const cellName = Cell.columnRowToCell(column, row)!;
                 const cell = cells.get(cellName) as CellTransport;
                 if (cell) {
-                    sheetDisplayStrings[row][column] = this._getCellValue(cell);
+                    sheetDisplayStrings[row][column] = this._getCellValue(cell) + "|" + cell.editing;
+                    // sheetDisplayStrings[row][column] = this._getCellValue(cell) + "|" + "XX";
                 } else {
                     sheetDisplayStrings[row][column] = 'xxx';
                 }
@@ -404,8 +405,8 @@ class SpreadSheetClient {
 
     private _getEditorString(contributingUsers: userEditing[], cellLabel: string): string {
         for (let user of contributingUsers) {
-            if (user.cellLabel === cellLabel) {
-                return user.userName;
+            if (user.cell === cellLabel) {
+                return user.user;
             }
         }
         return '';
