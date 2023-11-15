@@ -1,0 +1,80 @@
+/* Main chat container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 500px; /* Adjust as needed */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Chat window where messages are displayed */
+.chat-window {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Individual chat message styling */
+.chat-message-current,
+.chat-message-other {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: black; /* Message color */
+  text-align: left;
+}
+
+/* Current user message styling */
+.chat-message-current {
+  align-self: flex-end;
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+}
+
+/* Other users' message styling */
+.chat-message-other {
+  align-self: flex-start;
+  background-color: #e8eaf6;
+  border: 1px solid #c5cae9;
+}
+
+/* User and timestamp label */
+.user {
+  font-size: 1rem;
+  color: #666;
+  display: inline; /* Inline display for user-time-message format */
+  margin-right: 5px; /* Spacing between user and message */
+}
+
+/* Chat input area */
+.chat-input-container {
+  display: flex;
+  padding: 10px;
+}
+
+/* Input field for typing messages */
+.messageInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* Send button */
+.sendButton {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sendButton:hover {
+  background-color: #43a047;
+}
