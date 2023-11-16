@@ -29,7 +29,7 @@ class SpreadSheetClient {
   // otherwise use the render server
 
   private _serverPort: number = PortsGlobal.serverPort;
-  private _baseURL: string = `${LOCAL_SERVER_URL}:${this._serverPort}`;
+  private _baseURL: string = `${RENDER_SERVER_URL}`;
   private _userName: string = "juancho";
   private _documentName: string = "test";
   private _document: DocumentTransport;
@@ -39,7 +39,7 @@ class SpreadSheetClient {
     this._userName = userName;
     this._documentName = documentName;
 
-    this.setServerSelector("localhost"); // change this to renderhost if you want to default to renderhost
+    this.setServerSelector("renderhost"); // change this to renderhost if you want to default to renderhost
 
     this._document = this._initializeBlankDocument();
     this._timedFetch();

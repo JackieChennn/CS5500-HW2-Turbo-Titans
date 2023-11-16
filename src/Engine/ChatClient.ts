@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import {
   PortsGlobal,
   LOCAL_SERVER_URL,
-  RENDER_SERVER_URL,
+  RENDER_CHAT_SERVER_URL,
 } from "../ServerDataDefinitions";
 
 interface ClientMessageProp {
@@ -15,12 +15,12 @@ class ChatClient {
   private _userName: string;
   private _serverURL: string;
   private _localServerURL: string = LOCAL_SERVER_URL;
-  private _renderServerURL: string = RENDER_SERVER_URL;
+  private _renderServerURL: string = RENDER_CHAT_SERVER_URL;
   private _serverPort: number = PortsGlobal.chatServerPort;
   private _socket: any;
   constructor(userName: string) {
     this._userName = userName;
-    this._serverURL = `${this._localServerURL}:${this._serverPort}`;
+    this._serverURL = `${this._renderServerURL}`;
   }
 
   connect(

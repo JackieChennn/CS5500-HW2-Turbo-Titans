@@ -22,7 +22,7 @@ const io = new Server(server, {
 
 // const redis = new Redis(); // connect to 127.0.0.1:6379
 
-const redis = new Redis({
+const redis = new Redis("redis://red-claljqeg1b2c73a6lb80:6379", {
   // This is the default value of `retryStrategy`
   retryStrategy(times) {
     const delay = Math.min(times * 50, 2000);
@@ -33,8 +33,8 @@ const redis = new Redis({
 io.on("connection", (socket) => {
   console.log(`A user connected:${socket.id}}`);
 
-  let sub: Redis | null = new Redis();
-  let pub: Redis | null = new Redis();
+  let sub: Redis | null = new Redis("redis://red-claljqeg1b2c73a6lb80:6379");
+  let pub: Redis | null = new Redis("redis://red-claljqeg1b2c73a6lb80:6379");
 
   let startId: string;
   let reachEnd: boolean = false;
