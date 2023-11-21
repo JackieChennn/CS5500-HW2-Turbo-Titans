@@ -6,6 +6,9 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomeButton from "./Components/HomeButton";
 import CreateNewSheet from "./Components/CreateNewSpreadsheet";
+import Chat from './Components/Chat';
+import ChatPage from "./Components/Chatpage";
+import { FaCommentDots } from 'react-icons/fa';
 
 function getDocumentNameFromWindow() {
   const href = window.location.href;
@@ -83,8 +86,18 @@ function App() {
               path="/:documentName"
               element={<SpreadSheet documentName={documentName} />}
             />
+            <Route
+              path="/chat"
+              element={<ChatPage />}
+            />
           </Routes>
         </header>
+        <footer className="chat-icon">
+          <div className="chat-icon">
+            <div className="chat-notification">new message..</div>
+            <FaCommentDots size={50} />
+          </div>
+        </footer>
       </div>
     </Router>
   );
