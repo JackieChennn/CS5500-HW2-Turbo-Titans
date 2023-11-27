@@ -3,9 +3,10 @@ import "./App.css";
 import SpreadSheet from "./Components/SpreadSheet";
 import DocumentList from "./Components/DocumentList";
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import HomeButton from "./Components/HomeButton";
 import CreateNewSheet from "./Components/CreateNewSpreadsheet";
+import ChatComponent from "./Components/ChatComponent";
 
 function getDocumentNameFromWindow() {
   const href = window.location.href;
@@ -74,6 +75,7 @@ function App() {
         <header className="App-header">
           <HomeButton />
           <CreateNewSheet onCreate={handleCreateNewSheet} />
+
           <Routes>
             <Route
               path="/"
@@ -89,5 +91,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;
