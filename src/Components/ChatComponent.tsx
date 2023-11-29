@@ -8,14 +8,14 @@ interface ChatcomponentProps {
 
 // the message body object
 interface ClientMessageProp {
-  // id: number;
+  id: number;
   user: string;
   msg: string;
   timestamp: string;
   // reactions[0] -> thumbs up
   // reactions[1] -> heart
   reactions: number[];
-  replies: ClientMessageProp | null;
+  replies: ClientMessageProp[];
 }
 
 const chatClient = new ChatClient("ricky");
@@ -73,13 +73,33 @@ function Chatcomponent({ userName }: ChatcomponentProps) {
     }
   };
 
-  function handleThumbsUpReaction(msgObj: ClientMessageProp) {
-    chatClient.sendReaction(msgObj, "👍");
+  function handleReaction(msgObj: ClientMessageProp, reactionType: 'thumbsUp' | 'love') {
+    const updatedChatLog = chatLog.map(msg => {
+      if (msg.id === msgObj.id) {
+        // Ensure reactions array is initialized
+        if (!msg.reactions) {
+          msg.reactions = [0, 0];
+        }
+  
+        // Update reactions in an immutable way
+        const newReactions = [...msg.reactions];
+        if (reactionType === 'thumbsUp') {
+          newReactions[0] += 1;
+        } else {
+          newReactions[1] += 1;
+        }
+  
+        // Return updated message
+        return { ...msg, reactions: newReactions };
+      }
+      return msg;
+    });
+  
+    setChatLog(updatedChatLog);
+    chatClient.sendReaction(msgObj, reactionType === 'thumbsUp' ? "👍" : "❤️");
   }
+  
 
-  function handleLoveReaction(msgObj: ClientMessageProp) {
-    chatClient.sendReaction(msgObj, "❤️");
-  }
 
   function handleReply(msgObj: ClientMessageProp) {
     let inputElement = document.getElementById(
@@ -94,6 +114,17 @@ function Chatcomponent({ userName }: ChatcomponentProps) {
       alert("Message cannot be empty!");
     }
   }
+
+
+  function renderReplies(replies: ClientMessageProp[]) {
+    return replies.map((reply, index) => (
+      <div className="chat-reply" key={index}>
+        <span className="user">{`${reply.user} [${reply.timestamp}]`}</span>
+        : <span className="message-reply">{reply.msg}</span>
+      </div>
+    ));
+  }
+
 
   function getChatScopes(msgObj: ClientMessageProp, index: number) {
     const isLastMessage = index === chatLog.length - 1;
@@ -132,8 +163,8 @@ function Chatcomponent({ userName }: ChatcomponentProps) {
       >
         <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
         : <span className="message-other">{msgObj.msg}</span>
-        <button onClick={() => handleThumbsUpReaction(msgObj)}>👍{`${msgObj.reactions}`}</button>
-        <button onClick={() => handleLoveReaction(msgObj)}>❤️</button>
+        <button onClick={() => handleReaction(msgObj, 'thumbsUp')}>👍</button>
+        <button onClick={() => handleReaction(msgObj, 'love')}>❤️</button>
         <button onClick={() => handleReply(msgObj)}>Reply</button>
       </div>);
     }
