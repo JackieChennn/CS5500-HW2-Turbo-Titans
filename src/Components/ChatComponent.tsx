@@ -6,10 +6,16 @@ interface ChatcomponentProps {
   userName: string;
 }
 
+// the message body object
 interface ClientMessageProp {
+  // id: number;
   user: string;
   msg: string;
   timestamp: string;
+  // reactions[0] -> thumbs up
+  // reactions[1] -> heart
+  reactions: number[];
+  replies: ClientMessageProp | null;
 }
 
 const chatClient = new ChatClient("ricky");
@@ -67,6 +73,28 @@ function Chatcomponent({ userName }: ChatcomponentProps) {
     }
   };
 
+  function handleThumbsUpReaction(msgObj: ClientMessageProp) {
+    chatClient.sendReaction(msgObj, "👍");
+  }
+
+  function handleLoveReaction(msgObj: ClientMessageProp) {
+    chatClient.sendReaction(msgObj, "❤️");
+  }
+
+  function handleReply(msgObj: ClientMessageProp) {
+    let inputElement = document.getElementById(
+      "inputMessage"
+    ) as HTMLInputElement;
+    let currentMessage = inputElement.value;
+
+    if (currentMessage.length !== 0) {
+      chatClient.sendReply(msgObj, currentMessage);
+      inputElement.value = "";
+    } else {
+      alert("Message cannot be empty!");
+    }
+  }
+
   function getChatScopes(msgObj: ClientMessageProp, index: number) {
     const isLastMessage = index === chatLog.length - 1;
 
@@ -87,16 +115,27 @@ function Chatcomponent({ userName }: ChatcomponentProps) {
     ) {
       return null;
     } else {
-      return (
-        <div
-          className="chat-message-other"
-          key={index}
-          ref={isLastMessage ? bottomRef : null}
-        >
-          <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
-          : <span className="message-other">{msgObj.msg}</span>
-        </div>
-      );
+      // return (
+      //   <div
+      //     className="chat-message-other"
+      //     key={index}
+      //     ref={isLastMessage ? bottomRef : null}
+      //   >
+      //     <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
+      //     : <span className="message-other">{msgObj.msg}</span>
+      //   </div>
+      // );
+      return (<div
+        className="chat-message-other"
+        key={index}
+        ref={isLastMessage ? bottomRef : null}
+      >
+        <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
+        : <span className="message-other">{msgObj.msg}</span>
+        <button onClick={() => handleThumbsUpReaction(msgObj)}>👍{`${msgObj.reactions}`}</button>
+        <button onClick={() => handleLoveReaction(msgObj)}>❤️</button>
+        <button onClick={() => handleReply(msgObj)}>Reply</button>
+      </div>);
     }
   }
 

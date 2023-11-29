@@ -6,9 +6,14 @@ import {
 } from "../ServerDataDefinitions";
 
 interface ClientMessageProp {
+  // id: number;
   user: string;
   msg: string;
   timestamp: string;
+  // reactions[0] -> thumbs up
+  // reactions[1] -> heart
+  reactions: number[];
+  replies: ClientMessageProp | null;
 }
 
 class ChatClient {
@@ -61,8 +66,20 @@ class ChatClient {
         user: this._userName,
         msg: message,
         timestamp: currentTime,
+        reactions: [0, 0],
+        replies: null,
       };
       this._socket.emit("send_message", messageObj);
+    } else if (this._userName === "") {
+      alert("Please enter a user name!");
+    } else {
+      alert("Please connect to the server first!");
+    }
+  }
+
+  sendReaction(msgObj: ClientMessageProp, emoji: string) {
+    if (this._socket && this._userName !== "") {
+      this._socket.emit("send_reaction", msgObj, emoji);
     } else if (this._userName === "") {
       alert("Please enter a user name!");
     } else {

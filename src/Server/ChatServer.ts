@@ -62,6 +62,39 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("send_reaction", async (message: MessageProp, emoji: string) => {
+    // if emoji is thumbs up, add 1 to thumbs up count
+    // if emoji is love, add 1 to love count
+    // change Redis chat stream
+    if (emoji === "👍") {
+      await redis.xadd(
+        "chat",
+        "*",
+        "username",
+        message.user,
+        "timestamp",
+        message.timestamp.toString(),
+        "message",
+        message.msg,
+        "thumbsUp",
+        "1"
+      );
+    } else if (emoji === "❤️") {
+      await redis.xadd(
+        "chat",
+        "*",
+        "username",
+        message.user,
+        "timestamp",
+        message.timestamp.toString(),
+        "message",
+        message.msg,
+        "love",
+        "1"
+      );
+    }
+  });
+
   // -------------------- Message Cousumer -------------------- //
   // helper function to convert stream value to json object
   const processMessage = (message: any) => {
