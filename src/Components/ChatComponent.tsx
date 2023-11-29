@@ -4,6 +4,8 @@ import "./Chatcomponent.css";
 
 interface ChatcomponentProps {
   userName: string;
+  onClose: () => void;
+  onNewMessage: () => void;
 }
 
 // the message body object
@@ -21,12 +23,15 @@ interface ClientMessageProp {
 const chatClient = new ChatClient("ricky");
 const vancouverTimezone = "America/Vancouver";
 
-function Chatcomponent({ userName }: ChatcomponentProps) {
+function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) {
   const [chatLog, setChatLog] = useState<ClientMessageProp[]>([]);
   const bottomRef = useRef<HTMLDivElement | null>(null); // Correctly typed ref for the auto-scroll feature
 
   const onMessageReceived = (msg: ClientMessageProp) => {
     setChatLog((prevLog) => [...prevLog, msg]);
+    if (msg.user != userName) {
+      onNewMessage();
+    }
   };
 
   const onHistoryMessageReceived = (msgs: ClientMessageProp[]) => {
@@ -164,6 +169,10 @@ function Chatcomponent({ userName }: ChatcomponentProps) {
         />
         <button onClick={handleSendMessage} className="sendButton">
           Send
+        </button>
+        &nbsp;
+        <button onClick={onClose} className="closeChatButton">
+          Close
         </button>
       </div>
     </div>
