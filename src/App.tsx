@@ -6,6 +6,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import HomeButton from "./Components/HomeButton";
 import CreateNewSheet from "./Components/CreateNewSpreadsheet";
+import { FaCommentDots } from "react-icons/fa";
 import ChatComponent from "./Components/ChatComponent";
 
 function getDocumentNameFromWindow() {
