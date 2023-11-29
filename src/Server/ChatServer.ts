@@ -79,6 +79,7 @@ io.on("connection", (socket) => {
     } else if (emoji === "love") {
       await redis.hincrby(`chat:${message.id}`, "love", 1);
     }
+    
   });
 
   socket.on("send_reply", async (message: MessageProp, reply: MessageProp) => {
