@@ -157,6 +157,10 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
       <div className="chat-window">
         {chatLog.map((msgObj, index) => getChatScopes(msgObj, index))}
       </div>
+      <div>
+        // TODO: Render replies
+        <button onClick={() => chatClient.loadHistoryMessage()}>Load More</button>
+      </div>
       <div className="chat-input-container"> 
         <input
           placeholder="Enter a message"
