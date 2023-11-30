@@ -8,10 +8,16 @@ interface ChatcomponentProps {
   onNewMessage: () => void;
 }
 
+// the message body object
 interface ClientMessageProp {
+  id: number;
   user: string;
   msg: string;
   timestamp: string;
+  // reactions[0] -> thumbs up
+  // reactions[1] -> heart
+  reactions: number[];
+  replies: ClientMessageProp[];
 }
 
 const chatClient = new ChatClient("ricky");
@@ -71,38 +77,78 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
       alert("Message cannot be empty!");
     }
   };
+// (msg.id + thumbsup)
+  function handleReaction(msgObj: ClientMessageProp, reactionType: 'thumbsUp' | 'love') {
+    const updatedChatLog = chatLog.map(msg => {
+      if (msg.timestamp === msgObj.timestamp) {
+        // Ensure reactions array is initialized
+        if (!msg.reactions) {
+          msg.reactions = [0, 0];
+        }
+  
+        // Update reactions in an immutable way
+        if (reactionType === 'thumbsUp') {
+          msg.reactions = [msg.reactions[0] + 1, msg.reactions[1]];
+        } else {
+          msg.reactions = [msg.reactions[0], msg.reactions[1] + 1];
+        }
+  
+        // Return updated message
+        return msg;
+      }
+      return msg;
+    });
+  
+    setChatLog(updatedChatLog);
+    chatClient.sendReaction(msgObj, reactionType === 'thumbsUp' ? "👍" : "❤️");
+  }
+  
+  
+
+
+  function handleReply(msgObj: ClientMessageProp) {
+    let inputElement = document.getElementById(
+      "inputMessage"
+    ) as HTMLInputElement;
+    let currentMessage = inputElement.value;
+
+    if (currentMessage.length !== 0) {
+      chatClient.sendReply(msgObj, currentMessage);
+      inputElement.value = "";
+    } else {
+      alert("Message cannot be empty!");
+    }
+  }
+
+
+  function renderReplies(replies: ClientMessageProp[]) {
+    return replies.map((reply, index) => (
+      <div className="chat-reply" key={index}>
+        <span className="user">{`${reply.user} [${reply.timestamp}]`}</span>
+        : <span className="message-reply">{reply.msg}</span>
+      </div>
+    ));
+  }
+
 
   function getChatScopes(msgObj: ClientMessageProp, index: number) {
     const isLastMessage = index === chatLog.length - 1;
 
-    if (msgObj.user === userName) {
-      return (
-        <div
-          className="chat-message-current"
-          key={index}
-          ref={isLastMessage ? bottomRef : null}
-        >
-          <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
-          : <span className="message-current">{msgObj.msg}</span>
-        </div>
-      );
-    } else if (
-      msgObj.user === "System" &&
-      msgObj.msg === "[WARNING] No more history messages"
-    ) {
-      return null;
-    } else {
-      return (
-        <div
-          className="chat-message-other"
-          key={index}
-          ref={isLastMessage ? bottomRef : null}
-        >
-          <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
-          : <span className="message-other">{msgObj.msg}</span>
-        </div>
-      );
-    }
+    return (
+      <div
+        className={`chat-message-${msgObj.user === userName ? "current" : "other"}`}
+        key={index}
+        ref={isLastMessage ? bottomRef : null}
+      >
+        <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
+        : <span className={`message-${msgObj.user === userName ? "current" : "other"}`}>{msgObj.msg}</span>
+        <div className="reactions">
+          <button onClick={() => handleReaction(msgObj, 'thumbsUp')}>👍 {msgObj.reactions?.[0] || 0}</button>
+          <button onClick={() => handleReaction(msgObj, 'love')}>❤️ {msgObj.reactions?.[1] || 0}</button>
+          <button onClick={() => handleReply(msgObj)}>Reply</button>
+          </div>
+      </div>
+    );
   }
 
   return (
@@ -111,7 +157,7 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
       <div className="chat-window">
         {chatLog.map((msgObj, index) => getChatScopes(msgObj, index))}
       </div>
-      <div className="chat-input-container">
+      <div className="chat-input-container"> 
         <input
           placeholder="Enter a message"
           type="text"
