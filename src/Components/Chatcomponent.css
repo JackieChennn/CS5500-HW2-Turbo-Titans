@@ -102,7 +102,7 @@
 .chat-icon {
   position: fixed;
   right: 10px;
-  bottom: 10px;
+  bottom: 70px;
   z-index: 100;
   color: #d1512d;
 }
