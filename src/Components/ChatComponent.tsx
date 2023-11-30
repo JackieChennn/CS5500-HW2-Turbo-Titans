@@ -77,25 +77,24 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
       alert("Message cannot be empty!");
     }
   };
-
+// (msg.id + thumbsup)
   function handleReaction(msgObj: ClientMessageProp, reactionType: 'thumbsUp' | 'love') {
     const updatedChatLog = chatLog.map(msg => {
-      if (msg.id === msgObj.id) {
+      if (msg.timestamp === msgObj.timestamp) {
         // Ensure reactions array is initialized
         if (!msg.reactions) {
           msg.reactions = [0, 0];
         }
   
         // Update reactions in an immutable way
-        const newReactions = [...msg.reactions];
         if (reactionType === 'thumbsUp') {
-          newReactions[0] += 1;
+          msg.reactions = [msg.reactions[0] + 1, msg.reactions[1]];
         } else {
-          newReactions[1] += 1;
+          msg.reactions = [msg.reactions[0], msg.reactions[1] + 1];
         }
   
         // Return updated message
-        return { ...msg, reactions: newReactions };
+        return msg;
       }
       return msg;
     });
@@ -134,8 +133,6 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
 
   function getChatScopes(msgObj: ClientMessageProp, index: number) {
     const isLastMessage = index === chatLog.length - 1;
-    const thumbsUpCount = msgObj.reactions?.[0] || 0; // Safe access with default value
-    const loveCount = msgObj.reactions?.[1] || 0; // Safe access with default value
 
     return (
       <div
@@ -146,8 +143,8 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
         <span className="user">{`${msgObj.user} [${msgObj.timestamp}]`}</span>
         : <span className={`message-${msgObj.user === userName ? "current" : "other"}`}>{msgObj.msg}</span>
         <div className="reactions">
-          <button onClick={() => handleReaction(msgObj, 'thumbsUp')}>👍 {thumbsUpCount}</button>
-          <button onClick={() => handleReaction(msgObj, 'love')}>❤️ {loveCount}</button>
+          <button onClick={() => handleReaction(msgObj, 'thumbsUp')}>👍 {msgObj.reactions?.[0] || 0}</button>
+          <button onClick={() => handleReaction(msgObj, 'love')}>❤️ {msgObj.reactions?.[1] || 0}</button>
           <button onClick={() => handleReply(msgObj)}>Reply</button>
           </div>
       </div>
@@ -160,7 +157,7 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
       <div className="chat-window">
         {chatLog.map((msgObj, index) => getChatScopes(msgObj, index))}
       </div>
-      <div className="chat-input-container">
+      <div className="chat-input-container"> 
         <input
           placeholder="Enter a message"
           type="text"
