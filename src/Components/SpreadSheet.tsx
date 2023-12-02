@@ -4,7 +4,7 @@ import Status from "./Status";
 import KeyPad from "./KeyPad";
 import SpreadSheetClient from "../Engine/SpreadSheetClient";
 import SheetHolder from "./SheetHolder";
-import { FaCommentDots } from "react-icons/fa";
+
 import { ButtonNames } from "../Engine/GlobalDefinitions";
 import ServerSelector from "./ServerSelector";
 import ChatComponent from "./ChatComponent";
@@ -45,19 +45,6 @@ function SpreadSheet({ documentName }: SpreadSheetProps) {
     window.sessionStorage.getItem("userName") || ""
   );
   const [serverSelected, setServerSelected] = useState("localhost");
-
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const [newMessageAlert, setNewMessageAlert] = useState('');
-
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-    setNewMessageAlert('');
-  };
-
-  const handleNewMessage = () => {
-    setNewMessageAlert('new message(s)');
-  };
 
   function updateDisplayValues(): void {
     spreadSheetClient.userName = userName;
@@ -236,17 +223,7 @@ function SpreadSheet({ documentName }: SpreadSheetProps) {
         serverSelector={serverSelector}
         serverSelected={serverSelected}
       />
-      <footer className="chat-icon">
-        <div className="chat-icon">
-          {newMessageAlert && <div className="chat-notification">{newMessageAlert}</div>}
-          <FaCommentDots size={50} onClick={toggleChat} />
-        </div>
-      </footer>
-      
-        <div style={{ position: 'fixed', bottom: '0', right: '0' }} hidden={!isChatOpen}>
-          <ChatComponent userName={userName} onClose={toggleChat} onNewMessage={handleNewMessage} />
-        </div>
-      
+      <ChatComponent userName={userName} />
     </div>
   );
 }

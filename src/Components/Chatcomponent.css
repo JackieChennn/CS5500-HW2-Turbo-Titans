@@ -1,13 +1,8 @@
 /* Main chat container */
 .chat-container {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  position: fixed;
-  bottom: 10px;
-  right: 70px;
-  width: 70%;
-  height: 90%;
+  height: 500px; /* Adjust as needed */
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
@@ -68,7 +63,6 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-right: 10px;
-  width: 50%;
 }
 
 /* Send button */
@@ -83,52 +77,4 @@
 
 .sendButton:hover {
   background-color: #43a047;
-}
-
-/* Close chat button */
-.closeChatButton {
-  padding: 10px 15px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.closeChatButton:hover {
-  background-color: rgb(189, 63, 63);
-}
-
-.chat-icon {
-  position: fixed;
-  right: 10px;
-  bottom: 10px;
-  z-index: 100;
-  color: #d1512d;
-}
-
-.chat-notification {
-  position: absolute;
-  bottom: 10%;
-  right: 0;
-  background: white;
-  color: black;
-  padding: 7px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  margin-right: 60px;
-  text-align: center;
-  width: 120px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  font-size: 13px;
-}
-
-.chat-notification:after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  right: 20px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: #282c34 transparent transparent transparent;
 }
