@@ -71,7 +71,8 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
 
     if (currentMessage.length !== 0) {
       if (replyToMessage) {
-        chatClient.sendReply(replyToMessage, currentMessage);
+        // chatClient.sendReply(replyToMessage, currentMessage);
+        chatClient.sendMessage(currentMessage, replyToMessage);
         setReplyToMessage(null); // Reset reply state
       } else {
         chatClient.sendMessage(currentMessage);

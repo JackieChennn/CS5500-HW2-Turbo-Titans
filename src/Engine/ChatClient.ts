@@ -60,16 +60,28 @@ class ChatClient {
         const vancouverTimezone = "America/Vancouver";
         const options = { timeZone: vancouverTimezone, hour12: false };
 
-        const currentTime = new Date().toLocaleString("en-US", options);
+      const currentTime = new Date().toLocaleString("en-US", options);
+      if (replyToMessage) {
         const messageObj: ClientMessageProp = {
-            id: Date.now(), // Assuming unique ID generation for each message
-            user: this._userName,
-            msg: message,
-            timestamp: currentTime,
-            reactions: [0, 0],
-            replies: []
+          id: Date.now(), // Assuming unique ID generation for each message
+          user: this._userName,
+          msg: `Reply to ${replyToMessage.user} [${replyToMessage.timestamp}] ${replyToMessage.msg} ==> ${message}`,
+          timestamp: currentTime,
+          reactions: [0, 0],
+          replies: []
         };
         this._socket.emit("send_message", messageObj);
+      } else {
+        const messageObj: ClientMessageProp = {
+          id: Date.now(), // Assuming unique ID generation for each message
+          user: this._userName,
+          msg: message,
+          timestamp: currentTime,
+          reactions: [0, 0],
+          replies: []
+        };
+        this._socket.emit("send_message", messageObj);
+      }
     } else if (this._userName === "") {
         alert("Please enter a user name!");
     } else {
@@ -97,7 +109,7 @@ class ChatClient {
         msg: replyMessage,
         timestamp: currentTime,
         reactions: [0, 0],
-        replies: []
+        replies: [originalMsgObj]
       };
       this._socket.emit("send_reply", originalMsgObj, replyMsgObj);
     } else if (this._userName === "") {
