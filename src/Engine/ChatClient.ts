@@ -55,27 +55,28 @@ class ChatClient {
     });
   }
 
-  sendMessage(message: string) {
+  sendMessage(message: string, replyToMessage?: ClientMessageProp) {
     if (this._socket && this._userName !== "") {
-      const vancouverTimezone = "America/Vancouver";
-      const options = { timeZone: vancouverTimezone, hour12: false };
+        const vancouverTimezone = "America/Vancouver";
+        const options = { timeZone: vancouverTimezone, hour12: false };
 
-      const currentTime = new Date().toLocaleString("en-US", options);
-      const messageObj: ClientMessageProp = {
-        id: Date.now(), // Assuming unique ID generation for each message
-        user: this._userName,
-        msg: message,
-        timestamp: currentTime,
-        reactions: [0, 0],
-        replies: []
-      };
-      this._socket.emit("send_message", messageObj);
+        const currentTime = new Date().toLocaleString("en-US", options);
+        const messageObj: ClientMessageProp = {
+            id: Date.now(), // Assuming unique ID generation for each message
+            user: this._userName,
+            msg: message,
+            timestamp: currentTime,
+            reactions: [0, 0],
+            replies: []
+        };
+        this._socket.emit("send_message", messageObj);
     } else if (this._userName === "") {
-      alert("Please enter a user name!");
+        alert("Please enter a user name!");
     } else {
-      alert("Please connect to the server first!");
+        alert("Please connect to the server first!");
     }
-  }
+}
+
 
   sendReaction(msgObj: ClientMessageProp, emoji: string) {
     if (this._socket && this._userName !== "") {
@@ -89,12 +90,9 @@ class ChatClient {
 
   sendReply(originalMsgObj: ClientMessageProp, replyMessage: string) {
     if (this._socket && this._userName !== "") {
-      const vancouverTimezone = "America/Vancouver";
-      const options = { timeZone: vancouverTimezone, hour12: false };
-
-      const currentTime = new Date().toLocaleString("en-US", options);
+      const currentTime = new Date().toISOString();
       const replyMsgObj: ClientMessageProp = {
-        id: Date.now(), // Assuming unique ID generation for each reply
+        id: Date.now(),
         user: this._userName,
         msg: replyMessage,
         timestamp: currentTime,

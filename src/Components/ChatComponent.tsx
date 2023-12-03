@@ -25,6 +25,7 @@ const vancouverTimezone = "America/Vancouver";
 
 function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) {
   const [chatLog, setChatLog] = useState<ClientMessageProp[]>([]);
+  const [replyToMessage, setReplyToMessage] = useState<ClientMessageProp | null>(null); // TODO: Add replies to the state
   const bottomRef = useRef<HTMLDivElement | null>(null); // Correctly typed ref for the auto-scroll feature
 
   const onMessageReceived = (msg: ClientMessageProp) => {
@@ -71,12 +72,18 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
     let currentMessage = inputElement.value;
 
     if (currentMessage.length !== 0) {
-      chatClient.sendMessage(currentMessage);
+      if (replyToMessage) {
+        chatClient.sendReply(replyToMessage, currentMessage);
+        setReplyToMessage(null); // Reset reply state
+      } else {
+        chatClient.sendMessage(currentMessage);
+      }
       inputElement.value = "";
     } else {
       alert("Message cannot be empty!");
     }
   };
+  
 // (msg.id + thumbsup)
   function handleReaction(msgObj: ClientMessageProp, reactionType: 'thumbsUp' | 'love') {
     const updatedChatLog = chatLog.map(msg => {
@@ -106,18 +113,9 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
   
 
 
-  function handleReply(msgObj: ClientMessageProp) {
-    let inputElement = document.getElementById(
-      "inputMessage"
-    ) as HTMLInputElement;
-    let currentMessage = inputElement.value;
-
-    if (currentMessage.length !== 0) {
-      chatClient.sendReply(msgObj, currentMessage);
-      inputElement.value = "";
-    } else {
-      alert("Message cannot be empty!");
-    }
+  function handleReplyClick(msgObj: ClientMessageProp) {
+    setReplyToMessage(msgObj);
+    // Optionally, focus on the input field and prepend the original message or user's name
   }
 
 
@@ -145,7 +143,7 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
         <div className="reactions">
           <button onClick={() => handleReaction(msgObj, 'thumbsUp')}>👍 {msgObj.reactions?.[0] || 0}</button>
           <button onClick={() => handleReaction(msgObj, 'love')}>❤️ {msgObj.reactions?.[1] || 0}</button>
-          <button onClick={() => handleReply(msgObj)}>Reply</button>
+          <button onClick={() => handleReplyClick(msgObj)}>Reply</button>
           </div>
       </div>
     );
@@ -156,10 +154,6 @@ function Chatcomponent({ userName, onClose, onNewMessage }: ChatcomponentProps) 
       <button onClick={() => chatClient.loadHistoryMessage()}>Load More</button>
       <div className="chat-window">
         {chatLog.map((msgObj, index) => getChatScopes(msgObj, index))}
-      </div>
-      <div>
-        // TODO: Render replies
-        <button onClick={() => chatClient.loadHistoryMessage()}>Load More</button>
       </div>
       <div className="chat-input-container"> 
         <input

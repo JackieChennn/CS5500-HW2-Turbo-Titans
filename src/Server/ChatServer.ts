@@ -83,24 +83,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_reply", async (message: MessageProp, reply: MessageProp) => {
-    // add new reply to Redis chat stream
+    // Add new reply to Redis chat stream
     await pub!.xadd(
       "chat",
       "*",
-      "id",
-      reply.id.toString(),
-      "username",
-      reply.user,
-      "timestamp",
-      reply.timestamp.toString(),
-      "message",
-      reply.msg,
-      "thumbsUp",
-      "0",
-      "love",
-      "0",
-      "replyTo",
-      message.id.toString()
+      "id", reply.id.toString(),
+      "username", reply.user,
+      "timestamp", reply.timestamp.toString(),
+      "message", reply.msg,
+      "thumbsUp", "0",
+      "love", "0",
+      "replyTo", message.id.toString() // Reference to the original message
     );
     const chatLength = await redis.xlen("chat");
     // trim chat stream to 200 messages
